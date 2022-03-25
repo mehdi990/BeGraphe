@@ -195,27 +195,60 @@ public class Path {
      * consecutive arcs, the destination of the first one is the origin of the
      * second one.</li>
      * </ul>
-     * 
+     *                                       
      * @return true if the path is valid, false otherwise.
      * 
-     * @deprecated Need to be implemented.
+     *  Need to be implemented.
      */
     public boolean isValid() {
         // TODO:
-        return false;
-    }
+        boolean bool = false;
+        if(getLength()==0) {
+            bool=true;
+        } else {
+            if (size()==1) {
+                bool = true;
+            } else {
+                if(this.arcs.get(0).getOrigin()==this.origin ) {
+                    for (int i =0 ; i<this.arcs.size()-1;i++) {
+                        if(this.arcs.get(i).getDestination() == this.arcs.get(i+1).getOrigin()) {
+                        	
+                           continue;
+                        } else {
+                        	bool=false;
+                        }
+                        
+                        	
+                    }
+                    bool = true; 
+                } else {
+                	bool= false;
+                }
+            }
+            }
+        return bool;
+        }
+
+      
+
 
     /**
      * Compute the length of this path (in meters).
      * 
      * @return Total length of the path (in meters).
      * 
-     * @deprecated Need to be implemented.
+     *  Need to be implemented.
      */
     public float getLength() {
-        // TODO:
-        return 0;
+    	float TotalLength = 0;
+    	for (Arc myArc : this.arcs) {
+    		TotalLength = TotalLength + myArc.getLength();
+    	}
+    	return TotalLength;
     }
+        
+        
+    
 
     /**
      * Compute the time required to travel this path if moving at the given speed.
@@ -225,11 +258,17 @@ public class Path {
      * @return Time (in seconds) required to travel this path at the given speed (in
      *         kilometers-per-hour).
      * 
-     * @deprecated Need to be implemented.
+     * Need to be implemented.
      */
     public double getTravelTime(double speed) {
+    	float distance= getLength();
+    	double time;
+    	double ConvertedSpeed= speed/3600;
+    	
+    	time = distance/ConvertedSpeed;
+    	
         // TODO:
-        return 0;
+        return time;
     }
 
     /**
