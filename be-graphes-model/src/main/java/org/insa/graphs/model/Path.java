@@ -30,14 +30,44 @@ public class Path {
      * @throws IllegalArgumentException If the list of nodes is not valid, i.e. two
      *         consecutive nodes in the list are not connected in the graph.
      * 
-     * @deprecated Need to be implemented.
+     *  Need to be implemented.
      */
-    public static Path createFastestPathFromNodes(Graph graph, List<Node> nodes)
-            throws IllegalArgumentException {
-        List<Arc> arcs = new ArrayList<Arc>();
-        // TODO:
-        return new Path(graph, arcs);
-    }
+	   public static Path createFastestPathFromNodes(Graph graph, List<Node> nodes)
+	            throws IllegalArgumentException {
+	        List<Arc> arcs = new ArrayList<Arc>();
+	        double s=0;
+	        // TODO:
+	        int t=0;
+	        int n=nodes.size();
+	        if(n==0) return new Path(graph);
+	        else if(n==1) return new Path(graph,nodes.get(0));
+	        else {
+	            for(int i=0; i<n-1;i++) {
+	                List<Arc> succ = nodes.get(i).getSuccessors();
+	                
+	                s=Double.MAX_VALUE;
+	                if(succ.size() != 0){
+	                    //List<Arc> nvarcs = new ArrayList<Arc>();
+	                    for(int j =0 ; j< succ.size(); j++) {
+	                        if((succ.get(j).getDestination()==nodes.get(i+1))&&(succ.get(j).getMinimumTravelTime()<s)) {
+	                            s=succ.get(j).getLength();
+	                            t=j;
+	                        }
+	                    }
+	                    if ( s==Double.MAX_VALUE) {
+	                        throw new IllegalArgumentException("liste des noeuds erronées\n");
+	                    }
+	    
+	                    arcs.add(succ.get( t));
+	                }
+	                else {
+	                    throw new IllegalArgumentException("liste des noeuds erronées\n");
+	                }
+	            }
+	        }
+	            return new Path(graph, arcs);
+	    }
+
 
     /**
      * Create a new path that goes through the given list of nodes (in order),
@@ -51,12 +81,38 @@ public class Path {
      * @throws IllegalArgumentException If the list of nodes is not valid, i.e. two
      *         consecutive nodes in the list are not connected in the graph.
      * 
-     * @deprecated Need to be implemented.
+     *  Need to be implemented.
      */
     public static Path createShortestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
         List<Arc> arcs = new ArrayList<Arc>();
-        // TODO:
+        Arc next = null;
+        float distanceMinim = Float.MAX_VALUE;
+        if(nodes.size()==0) {
+        	return new Path(graph);
+        }
+        else if(nodes.size()==1) {
+        	return new Path(graph,nodes.get(0));
+        }
+        
+        for(int i=0;i<nodes.size()-1;i++) {
+        	for(Arc arc : nodes.get(i).getSuccessors()) {
+        		if(arc.getLength()<distanceMinim && arc.getDestination().equals(nodes.get(i+1))) {
+        			next = arc;
+        			distanceMinim = arc.getLength();
+        		
+        	    }
+            }
+        	if(next==null) {
+        		throw new IllegalArgumentException();
+        	}
+        	arcs.add(next);
+        	next=null;
+        	distanceMinim = Float.MAX_VALUE;
+        
+        }
+        	
+        
         return new Path(graph, arcs);
     }
 
@@ -203,31 +259,32 @@ public class Path {
     public boolean isValid() {
         // TODO:
         boolean bool = false;
-        if(getLength()==0) {
+        if(this.getLength()==0) {
             bool=true;
         } else {
-            if (size()==1) {
+            if (this.size()==1) {
                 bool = true;
             } else {
                 if(this.arcs.get(0).getOrigin()==this.origin ) {
                     for (int i =0 ; i<this.arcs.size()-1;i++) {
                         if(this.arcs.get(i).getDestination() == this.arcs.get(i+1).getOrigin()) {
-                        	
+                            
                            continue;
                         } else {
-                        	bool=false;
+                            return false;
                         }
                         
-                        	
+                            
                     }
-                    bool = true; 
+                    return true;
                 } else {
-                	bool= false;
+                    return false;
                 }
             }
             }
         return bool;
         }
+
 
       
 
@@ -261,9 +318,9 @@ public class Path {
      * Need to be implemented.
      */
     public double getTravelTime(double speed) {
-    	float distance= getLength();
+    	double distance= getLength();
     	double time;
-    	double ConvertedSpeed= speed/3600;
+    	double ConvertedSpeed= speed/3.6;
     	
     	time = distance/ConvertedSpeed;
     	
@@ -277,11 +334,16 @@ public class Path {
      * 
      * @return Minimum travel time to travel this path (in seconds).
      * 
-     * @deprecated Need to be implemented.
+     *  Need to be implemented.
      */
     public double getMinimumTravelTime() {
-        // TODO:
-        return 0;
+        double minTime=0;
+        if(!this.arcs.isEmpty()) {
+        	for(Arc arc : this.arcs) {
+        		minTime=minTime+arc.getMinimumTravelTime();
+        	}
+        }
+        return minTime;
     }
 
 }
