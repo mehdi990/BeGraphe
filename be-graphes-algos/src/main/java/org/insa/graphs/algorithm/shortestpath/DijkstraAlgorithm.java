@@ -43,6 +43,8 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         Node o = data.getOrigin();
         tablab[o.getId()].setCost(0);
         heapLabel.insert(tablab[o.getId()]);
+        notifyOriginProcessed(data.getOrigin());
+
         
         int j=0;
         boolean reachedDest =false;
@@ -61,14 +63,39 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         	}
         	for(Arc arc : nd.getSuccessors()) {
         		Node desti= arc.getDestination();
+        		  if (!data.isAllowed(arc)) {
+                      continue;
+                  }
         		Label labelDest = tablab[desti.getId()];
         		if(!labelDest.getMark() && data.isAllowed(arc)) {
         			float arcCost = (float) data.getCost(arc);
         			float newCost = lab.getcost()+arcCost;
         			float oldCost = labelDest.getcost();
-        			 if (Double.isInfinite(oldCost) && Double.isFinite(newCost)) {
-                         notifyNodeReached(arc.getDestination());
-                     }
+
+                     
+        			if(!labelDest.getMark()) {
+	        			if(newCost<oldCost) {
+	        				labelDest.setCost(newCost);
+	        				labelDest.setFather(arc);
+	                        notifyNodeReached(arc.getDestination());
+
+	        		
+	        			if(labelDest.getMark()) {
+	        				heapLabel.remove(labelDest);
+	        				heapLabel.insert(labelDest);
+	        			}else {
+	        				heapLabel.insert(labelDest);
+	        			}
+	        			
+	        			
+	        			
+	        			
+	        			}
+        			}
+	        				
+        			 
+        			 
+        			 /*
         			 if(newCost < oldCost) {
          				try {
          					heapLabel.remove(labelDest);
@@ -77,7 +104,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
          				heapLabel.insert(labelDest);
          				if(Double.isInfinite(oldCost))
          					notifyNodeReached(desti);
-         			}
+         			}*/
 
                    
         			
@@ -88,22 +115,23 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
                      	tablab[desti.getId()].setCost(newCost);
                      	tablab[desti.getId()].setFather(arc);
                      	heapLabel.insert(tablab[desti.getId()]);
-                     	//if (!tas.isValid())
-                     		//System.out.println(" Le tas est valide : " + false);
+                     	
                      }*/
-        			
-        			/*if(newCost<oldCost) {
-        				
-        				if(labelDest.getcost()<Float.POSITIVE_INFINITY) {
-        					heapLabel.remove(labelDest);
-        				}
-        				else 
-        					
-    					labelDest.setCost(Math.min(labelDest.getcost(), newCost));
-    					heapLabel.insert(labelDest);
-    					labelDest.setFather(arc);
-        				
-        					
+        			 /*
+        			if(!labelDest.getMark()) {
+	        			if(newCost<oldCost) {
+	        				
+	        				if(labelDest.getcost()<Float.POSITIVE_INFINITY) {
+	        					heapLabel.remove(labelDest);
+	        				}
+	        				else 
+	        					
+	    					labelDest.setCost(Math.min(labelDest.getcost(), newCost));
+	    					heapLabel.insert(labelDest);
+	    					labelDest.setFather(arc);
+	        				
+	        					
+	        			}
         			}*/
         					
         		}
@@ -113,7 +141,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         	
         }
      // Destination has no predecessor, the solution is infeasible...
-        if (predecessorArcs[data.getDestination().getId()] == null) {
+        if (!tablab[data.getDestination().getId()].getMark()) {
             solution = new ShortestPathSolution(data, Status.INFEASIBLE);
         }
         else {
@@ -123,10 +151,10 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
             // Create the path from the array of predecessors...
             ArrayList<Arc> arcs = new ArrayList<>();
-            Arc arc = predecessorArcs[data.getDestination().getId()];
+            Arc arc = tablab[data.getDestination().getId()].getFather();
             while (arc != null) {
                 arcs.add(arc);
-                arc = predecessorArcs[arc.getOrigin().getId()];
+                arc = tablab[arc.getOrigin().getId()].getFather();
             }
 
             // Reverse the path...

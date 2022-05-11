@@ -1,18 +1,22 @@
 package org.insa.graphs.model;
 
-public class Label {
+public class Label implements Comparable <Label>  {
 	
 	private Node node;
 	private boolean marked;
 	private Arc father;
 	private float coast;
 	
-	public Label(Node noeud,boolean marked,Arc father) {
+	public Label(Node noeud,boolean marked,Arc father,Float coast) {
 		this.node=noeud;
 		this.marked= marked;
 		this.father=father;
-		//this.coast=Float.MAX_VALUE;
+		this.coast=Float.MAX_VALUE;
 
+	}
+	public int compareTo(Label label) {
+		int comparaison = Double.compare(this.getcost(),label.getcost());
+		return comparaison;
 	}
 	
 	public float getcost() {
@@ -41,5 +45,6 @@ public class Label {
 	public void setNode(Node noeud) {
 		this.node=noeud;
 	}
+	
 
 }
