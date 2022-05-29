@@ -1,13 +1,16 @@
-package org.insa.graphs.model;
+package org.insa.graphs.algorithm.shortestpath;
+
+import org.insa.graphs.model.Arc;
+import org.insa.graphs.model.Node;
 
 public class Label implements Comparable <Label>  {
 	
-	private Node node;
-	private boolean marked;
-	private Arc father;
-	private float coast;
+	protected Node node;
+	protected boolean marked;
+	protected Arc father;
+	protected float coast;
 	
-	public Label(Node noeud,boolean marked,Arc father,Float coast) {
+	public Label(Node noeud,boolean marked,Arc father) {
 		this.node=noeud;
 		this.marked= marked;
 		this.father=father;
@@ -45,6 +48,14 @@ public class Label implements Comparable <Label>  {
 	public void setNode(Node noeud) {
 		this.node=noeud;
 	}
+	public int getId() {
+		return node.getId();
+	}
+	public double getTotalCost() {
+		return this.coast;
+	}
+	
+	
 	
 
 }

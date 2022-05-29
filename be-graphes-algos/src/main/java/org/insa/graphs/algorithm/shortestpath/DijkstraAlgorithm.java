@@ -13,7 +13,6 @@ import org.insa.graphs.model.Arc;
 import org.insa.graphs.model.Graph;
 import org.insa.graphs.model.Node;
 import org.insa.graphs.model.Path;
-import org.insa.graphs.model.Label;
 
 
 
@@ -22,7 +21,9 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
     public DijkstraAlgorithm(ShortestPathData data) {
         super(data);
     }
-
+    protected Label NewLabel(Node node , boolean marque, Arc père,ShortestPathData data) {
+    	return new LabelStar(node,false,null,data);
+    }
     @Override
     protected ShortestPathSolution doRun() {
         final ShortestPathData data = getInputData();
@@ -38,7 +39,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         
         //INIT
         for(Node node : nodes) {
-        	tablab[node.getId()]=new Label(node,false,null,Float.POSITIVE_INFINITY);
+        	tablab[node.getId()]= new Label(node, false, null);
         }
         Node o = data.getOrigin();
         tablab[o.getId()].setCost(0);
