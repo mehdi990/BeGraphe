@@ -96,45 +96,10 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 	        				
         			 
         			 
-        			 /*
-        			 if(newCost < oldCost) {
-         				try {
-         					heapLabel.remove(labelDest);
-         				} catch(ElementNotFoundException ignored) {}
-         				labelDest.setCost(newCost);
-         				heapLabel.insert(labelDest);
-         				if(Double.isInfinite(oldCost))
-         					notifyNodeReached(desti);
-         			}*/
-
+        			
                    
         			
-        			/*if (newCost < oldCost) {
-                     	if (Double.isFinite(oldCost)) {
-                     		heapLabel.remove(tablab[desti.getId()]);
-                     	}
-                     	tablab[desti.getId()].setCost(newCost);
-                     	tablab[desti.getId()].setFather(arc);
-                     	heapLabel.insert(tablab[desti.getId()]);
-                     	
-                     }*/
-        			 /*
-        			if(!labelDest.getMark()) {
-	        			if(newCost<oldCost) {
-	        				
-	        				if(labelDest.getcost()<Float.POSITIVE_INFINITY) {
-	        					heapLabel.remove(labelDest);
-	        				}
-	        				else 
-	        					
-	    					labelDest.setCost(Math.min(labelDest.getcost(), newCost));
-	    					heapLabel.insert(labelDest);
-	    					labelDest.setFather(arc);
-	        				
-	        					
-	        			}
-        			}*/
-        					
+        				
         		}
         		
         	}

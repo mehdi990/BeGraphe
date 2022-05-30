@@ -14,7 +14,7 @@ public class Label implements Comparable <Label>  {
 		this.node=noeud;
 		this.marked= marked;
 		this.father=father;
-		this.coast=Float.MAX_VALUE;
+		this.coast= Float.MAX_VALUE;
 
 	}
 	public int compareTo(Label label) {

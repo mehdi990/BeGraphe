@@ -7,10 +7,11 @@ import org.insa.graphs.model.Point;
 
 
 public class LabelStar extends Label  {
+	
 	public double coutDest;
 	
 	public LabelStar(Node node, boolean marked, Arc father, ShortestPathData data) {
-		super(node, marked, father);
+	super(node, marked, father);
 		
 		this.coutDest = Point.distance(node.getPoint(), data.getDestination().getPoint());
 
